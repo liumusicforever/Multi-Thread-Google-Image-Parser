@@ -35,7 +35,7 @@ The simple multi-thread parser for google image , and a small tool to remove dup
     ```
 * Step 3 :
     Launch Parser
-```python
+```shell
 # arguments:
 #   -h, --help            show this help message and exit
 #   --csv_path CSV_PATH   the csv file path
@@ -47,7 +47,7 @@ python Main.py --csv_path ./test.csv --output_root  ./data
 ```
 * Step 4 :
     Find duplicate images and remove it , group images.
-```python
+```shell
 # optional arguments:
 #   -h, --help            show this help message and exit
 #   --clean_dataset CLEAN_DATASET
