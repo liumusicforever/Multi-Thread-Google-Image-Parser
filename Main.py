@@ -1,5 +1,6 @@
 import os
 import csv
+import time
 import argparse
 import Queue
 from threading import Thread
@@ -36,26 +37,40 @@ def print_task():
     while not q.empty(): # check that the queue isn't empty
         each = q.get() # print the item from the queue
         print (each)
-    
+
+def parse_func(tesk_id,tesk_keyword):
+    print ("parsing {} : {}".format(tesk_id,tesk_keyword))
+    try:
+        img_list = get_Img_List(tesk_keyword)
+
+        out_dir = os.path.join(output_root,str(tesk_id))
+        download_page_by_list(img_list,out_dir)
+    except:
+        pass
+
+
 def do_task():
     while not q.empty(): # check that the queue isn't empty
         each = q.get() # print the item from the queue
         tesk_id = each[0]
         tesk_keyword = each[1]
-        img_list = get_Img_List(tesk_keyword)
-
-        out_dir = os.path.join(output_root,str(tesk_id))
-        download_page_by_list(img_list,out_dir)
+        try:
+            parse_func(tesk_id,tesk_keyword)
+        except:
+            time.sleep(1)
+            print ("retry {} : {} ".format(tesk_id,tesk_keyword))
+            parse_func(tesk_id,tesk_keyword)
+            continue
 
 
 
 def main():
-
+    print ("start parsing ...")
     # add items to the queue
     QueryList = csv.reader(open(csv_path))
     for i,each in enumerate(QueryList):
         q.put(each)
-
+    
     for i in range(25): # aka number of threads
         t1 = Thread(target = do_task) # target is the above function
         t1.start() # start the thread
