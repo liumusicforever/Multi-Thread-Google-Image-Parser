@@ -21,6 +21,7 @@ args = parser.parse_args()
 
 clean_dataset = args.clean_dataset
 mess_dataset = args.mess_dataset
+group_num = args.group_num
 
 def mkdirs(path):
     if not os.path.exists(path):
@@ -98,7 +99,7 @@ def main():
         
     
     for i,(filename,img_path) in enumerate(cln_list):
-        if i % 3 == 0:
+        if i % group_num == 0:
             group_id += 1
         out_dir = os.path.join(clean_dataset,'g_{}'.format(group_id))
         mkdirs(out_dir)
